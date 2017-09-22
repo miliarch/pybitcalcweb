@@ -1,0 +1,6 @@
+__pycache__*
+*.sublime*
+venv*
+.DS_Store
+config.py
+docker-compose.yml

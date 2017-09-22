@@ -1,0 +1,51 @@
+a {
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+body {
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-family: Sans-Serif;
+    line-height: 1.62;
+    margin: 0;
+}
+
+h1 {
+    font-size: 2.25em;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 1.25em;
+    margin: 0;
+    padding: 0;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+h4 {
+    font-size: 1em;
+}
+
+p {
+    font-size: .9em;
+    margin: 10px 0 10px 0;
+    padding: 0;
+}
+
+.content-body {
+    margin: 5px 0 0 0;
+    padding: 0 25px 10px 25px;
+    max-width: 768px;
+}
