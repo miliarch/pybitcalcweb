@@ -1,6 +1,6 @@
 # Python Bit Calculator (Web)
 
-A web base bit calculator that produces a conversion table of bit/byte values.
+A web based bit calculator that produces a conversion table of bit/byte values.
 
 ## Screenshot
 
