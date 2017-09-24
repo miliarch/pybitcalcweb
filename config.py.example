@@ -5,6 +5,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Debugging/key
 DEBUG = True
-SECRET_KEY = 'SUPER SECTRE KEY!'
+SECRET_KEY = 'SUPER SECRET KEY!'
 
 # DB Setup (no DB for now)
