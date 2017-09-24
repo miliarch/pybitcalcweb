@@ -14,7 +14,7 @@
 <form id="calcForm" action="/calculator">
     Amount:
     {% if sanitized_input %}
-        <input type="number" name="amount" value="{{ sanitized_input.amount|decimal|safe }}" step="any">
+        <input type="number" name="amount" value="{{ sanitized_input.amount|safe }}" step="any">
     {% else %}
         <input type="number" name="amount" value="1024" step="any">
     {% endif %}
@@ -119,7 +119,7 @@
             <td>{{ result.abbr|safe  }}</td>
             <td>{{ result.label|title|safe  }}s</td>
             {% if result.result_amount < 1 %}
-            <td>{{ result.result_amount|decimal_zero|safe }}</td>
+            <td>{{ result.result_amount|decimal|safe }}</td>
             {% else %}
             <td>{{ result.result_amount|decimal|safe }}</td>
             {% endif %}
