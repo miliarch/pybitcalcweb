@@ -128,21 +128,4 @@
     {% endfor %}
 </table>
 {% endif %}
-
-<!--
-<h2>Sanitized Input</h2>
-{% if sanitized_input %}
-    <pre>{{ sanitized_input|pretty_json|safe }}</pre>
-{% endif %}
-{% if conversion_table %}
-<h2>Conversion Table</h2>
-    <pre>{% for result in conversion_table %}
-{{ result|pretty_json|safe }}
-    {% endfor %}</pre>
-{% endif %}
-{% if messages %}
-<h2>Messages</h2>
-<pre>{% for message in messages %}{{ message|safe }}{% endfor %}</pre>
-{% endif %}
--->
 {% endblock %}
