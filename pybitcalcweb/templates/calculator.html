@@ -14,9 +14,9 @@
 <form id="calcForm" action="/calculator">
     Amount:
     {% if sanitized_input %}
-        <input type="number" name="amount" value="{{ sanitized_input.amount|decimal|safe }}" step="0.01">
+        <input type="number" name="amount" value="{{ sanitized_input.amount|decimal|safe }}" step="any">
     {% else %}
-        <input type="number" name="amount" value="1024" step="0.01">
+        <input type="number" name="amount" value="1024" step="any">
     {% endif %}
     <br>
     Prefix and type:
