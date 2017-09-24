@@ -1,4 +1,148 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1>Nothing here (yet)</h1>
+<h1>Bit Calculator</h1>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message|safe }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+<form id="calcForm" action="/calculator">
+    Amount:
+    {% if sanitized_input %}
+        <input type="number" name="amount" value="{{ sanitized_input.amount|decimal|safe }}" step="0.01">
+    {% else %}
+        <input type="number" name="amount" value="1024" step="0.01">
+    {% endif %}
+    <br>
+    Prefix and type:
+    <select name="prefix">
+        {% if sanitized_input %}
+            {% if sanitized_input.prefix == "none" %}
+                <option value="none" selected>-</option>
+            {% else %}
+                <option value="none">-</option>
+            {% endif %}
+            {% if sanitized_input.prefix == "kilo" %}
+                <option value="kilo" selected>Kilo</option>
+            {% else %}
+                <option value="kilo">Kilo</option>
+            {% endif %}
+            {% if sanitized_input.prefix == "mega" %}
+                <option value="mega" selected>Mega</option>
+            {% else %}
+                <option value="mega">Mega</option>
+            {% endif %}
+            {% if sanitized_input.prefix == "giga" %}
+                <option value="giga" selected>Giga</option>
+            {% else %}
+                <option value="giga">Giga</option>
+            {% endif %}
+            {% if sanitized_input.prefix == "tera" %}
+                <option value="tera" selected>Tera</option>
+            {% else %}
+                <option value="tera">Tera</option>
+            {% endif %}
+            {% if sanitized_input.prefix == "peta" %}
+                <option value="peta" selected>Peta</option>
+            {% else %}
+                <option value="peta">Peta</option>
+            {% endif %}
+        {% else %}
+        <option value="none">-</option>
+        <option value="kilo" selected>Kilo</option>
+        <option value="mega">Mega</option>
+        <option value="giga">Giga</option>
+        <option value="tera">Tera</option>
+        <option value="peta">Peta</option>
+        {% endif %}
+    </select>
+    <select name="type">
+        {% if sanitized_input %}
+            {% if sanitized_input.type == "bit" %}
+                <option value="bit" selected>bit</option>
+            {% else %}
+                <option value="bit">bit</option>
+            {% endif %}
+            {% if sanitized_input.type == "byte" %}
+                <option value="byte" selected>byte</option>
+            {% else %}
+                <option value="byte">byte</option>
+            {% endif %}
+        {% else %}
+            <option value="bit">bit</option>
+            <option value="byte" selected>byte</option>
+        {% endif %}
+    </select><br>
+    Base/Notation:
+    <select name="base">
+        {% if sanitized_input %}
+            {% if sanitized_input.base == "base-2" %}
+                <option value="base-2" selected>1024 (base-2)</option>
+            {% else %}
+                <option value="base-2">1024 (base-2)</option>
+            {% endif %}
+            {% if sanitized_input.base == "base-10" %}
+                <option value="base-10" selected>1000 (base-10)</option>
+            {% else %}
+                <option value="base-10">1000 (base-10)</option>
+            {% endif %}
+        {% else %}
+        <option value="base-2" selected>1024 (base-2)</option>
+        <option value="base-10">1000 (base-10)</option>
+        {% endif %}
+    </select><br>
+    <input type="submit" value="Print Conversion Table">
+</form>
+<script>
+    document.getElementById("calcForm").submit;
+</script>
+{% if conversion_table %}
+<br>
+<table>
+    <tr>
+        <th>Unit Abbr.</th>
+        <th>Unit Label</th>
+        <th>Amount</th>
+    </tr>
+    {% for result in conversion_table %}
+    <tr>
+        {% if  result.result_amount == sanitized_input.amount %}
+            <td class="targeted-row">{{ result.abbr|safe  }}</td>
+            <td class="targeted-row">{{ result.label|title|safe  }}s</td>
+            <td class="targeted-row">{{ result.result_amount|decimal|safe  }}</td>
+        {% else%}
+            <td>{{ result.abbr|safe  }}</td>
+            <td>{{ result.label|title|safe  }}s</td>
+            {% if result.result_amount < 1 %}
+            <td>{{ result.result_amount|decimal_zero|safe }}</td>
+            {% else %}
+            <td>{{ result.result_amount|decimal|safe }}</td>
+            {% endif %}
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<!--
+<h2>Sanitized Input</h2>
+{% if sanitized_input %}
+    <pre>{{ sanitized_input|pretty_json|safe }}</pre>
+{% endif %}
+{% if conversion_table %}
+<h2>Conversion Table</h2>
+    <pre>{% for result in conversion_table %}
+{{ result|pretty_json|safe }}
+    {% endfor %}</pre>
+{% endif %}
+{% if messages %}
+<h2>Messages</h2>
+<pre>{% for message in messages %}{{ message|safe }}{% endfor %}</pre>
+{% endif %}
+-->
 {% endblock %}
