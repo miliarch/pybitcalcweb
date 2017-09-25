@@ -18,7 +18,7 @@ Containerized python bit calculator web app with a single purpose - converting t
   * Development: `./compose/docker-compose.yml.dev`
   * Hosting/production: `./compose/docker-compose.yml.prod`
 * Open `./config.py` and set a non-default value for `SECRET_KEY`
-* Run `docker-compose up` and wait for the image to build and start
+* CD to `./compose` and run `docker-compose up`; wait for the images to build and start
 * Open your browser and connect to `127.0.0.1` (or whatever IP and port you expect)
 
 ## About
