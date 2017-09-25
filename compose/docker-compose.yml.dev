@@ -2,9 +2,11 @@ version: '2'
 services:
   app:
     container_name: bitcalc_app
-    build: .
+    build: 
+        context: ../
+        dockerfile: ./compose/app/Dockerfile
     command: python3 /app/run_dev.py
     volumes:
-      - .:/app
+        - ../:/app
     ports:
-      - 80:5000
+        - 80:5000

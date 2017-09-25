@@ -1,23 +1,3 @@
-# Input validation mappings
-VALID_INPUT_MAP = {
-    'prefix': (
-        'none',
-        'kilo',
-        'mega',
-        'giga',
-        'tera',
-        'peta'
-    ),
-    'type': (
-        'bit',
-        'byte'
-    ),
-    'base': (
-        'base-2',
-        'base-10'
-    )
-}
-
 # Base mappings
 BASE_MAP = {
     'base-2': 1024,
@@ -56,16 +36,26 @@ PREFIX_MAP = {
     }
 }
 
-def sanitize_input(user_input):
-    """ Checks user_input for validity
 
-    Input: Dictionary with the following keys
-        - amount: float
-        - prefix: (none|kilo|mega|giga|tera|peta) (string)
-        - type: (bit|byte) (string)
-        - base: (base-2|base-10) (string)
+def validate_input(user_input, input_map):
+    """ Checks user_input for validity and appends any validation errors to
+    return data.
 
-    Output: Sanitized user_input dictionary
+    Input:
+        - user_input: Dictionary containing the following input keys: values
+            - amount: float
+            - prefix: string
+            - type: string
+            - base: string
+        - input_map: Dictionary containing the following valid keys: values
+            prefix:
+                - valid_prefix_key: string
+            type: 
+                - valid_type_key: string
+            base:
+                - valid_base_key: string
+
+    Output: Validated user_input dictionary with errors list as key errors
     """
     # Split out user_input keys
     amt_value = user_input['amount']
@@ -76,41 +66,41 @@ def sanitize_input(user_input):
     # Set up error list to track any input issues
     errors = []
 
-    # Convert input amount to float for calculation
+    # Convert input amount from string to float for use in calculations
     try:
         amt_value = float(amt_value)
     except ValueError:
         # Append error string to errors list in user_input
-        err_str = "'{}' is not a number".format(amt_value)
+        err_str = "'{}' is not a valid value for amount, use numbers only.".format(amt_value)
         errors.append(err_str)
 
     # Check user input against valid value lists
-    valid_prefix = True if amt_prefix in VALID_INPUT_MAP['prefix'] else False
-    valid_type = True if amt_type in VALID_INPUT_MAP['type'] else False
-    valid_base = True if amt_base in VALID_INPUT_MAP['base'] else False
+    valid_prefix = True if amt_prefix in input_map['prefix'] else False
+    valid_type = True if amt_type in input_map['type'] else False
+    valid_base = True if amt_base in input_map['base'] else False
 
     if not valid_prefix:
         # Append error string to errors list in user_input
-        err_str = "'{}' is not a valid prefix: {}".format(
+        err_str = "'{}' is not a valid prefix: ({})".format(
             amt_prefix,
-            VALID_INPUT_MAP['prefix'])
+            ', '.join(input_map['prefix']))
         errors.append(err_str)
 
     if not valid_type:
         # Append error string to errors list in user_input
-        err_str = "'{}' is not a valid type: {}".format(
+        err_str = "'{}' is not a valid type: ({})".format(
             amt_type,
-            VALID_INPUT_MAP['type'])
+            ', '.join(input_map['type']))
         errors.append(err_str)
 
     if not valid_base:
         # Append error string to errors list in user_input
-        err_str = "'{}' is not a valid base: {}".format(
+        err_str = "'{}' is not a valid base: ({})".format(
             amt_base,
-            VALID_INPUT_MAP['base'])
+            ', '.join(input_map['base']))
         errors.append(err_str)
 
-    sanitized_input = {
+    validated_input = {
         'amount': amt_value,
         'prefix': amt_prefix,
         'type': amt_type,
@@ -118,7 +108,7 @@ def sanitize_input(user_input):
         'errors': errors
     }
 
-    return sanitized_input
+    return validated_input
 
 
 def convert_pbits_to_bits(amt_value, amt_prefix, amt_base):
@@ -129,7 +119,7 @@ def convert_pbits_to_bits(amt_value, amt_prefix, amt_base):
         - amt_prefix: Prefix of the amount (kilo|mega|giga|tera|peta) (string)
         - amt_base: Base notation of the amount (base-2|base-10) (string)
 
-    Output: Value in plain bits (float)
+    Output: Plain bit value (float)
     """
     prefix_to_power = {
         'kilo': 1,
@@ -143,18 +133,18 @@ def convert_pbits_to_bits(amt_value, amt_prefix, amt_base):
 
 
 def convert_bytes_to_bits(byte_value):
-    """ Convert bytes to bits """
+    """ Convert input bytes to bits """
     return byte_value * 8
 
 
 def convert_bits_to_bytes(bit_value):
-    """ Convert bytes to bits """
+    """ Convert input bits to bytes """
     return bit_value / 8
 
 
 def convert_amount_to_bits(amt_value, amt_prefix, amt_type, amt_base):
     """ Convert amount with prefix, type_ and base definitions to
-    plain bit value
+    plain bit value.
 
     Input:
         - amt_value: Amount bit/byte value (float)
@@ -162,7 +152,7 @@ def convert_amount_to_bits(amt_value, amt_prefix, amt_type, amt_base):
         - amt_type: Type of the amount (bit|byte) (string)
         - amt_base: Base notation of the amount (base-2|base-10) (string)
 
-    Output: Converted plain bit value
+    Output: Plain bit value
     """
     if amt_prefix == 'none' and amt_type == 'bit':
         return amt_value
