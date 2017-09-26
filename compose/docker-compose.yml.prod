@@ -7,7 +7,7 @@ services:
             dockerfile: ./compose/app/Dockerfile
         volumes:
             - ./logs:/var/log/bitcalc
-        command: gunicorn -w 5 -b 0.0.0.0:5000 pybitcalcweb:app --access-logfile /var/log/bitcalc/gunicorn-access.log --error-logfile /var/log/bitcalc/gunicorn-error.log
+        command: gunicorn -w 5 -b 0.0.0.0:5000 pybitcalcweb:app --access-logfile /var/log/bitcalc/gunicorn_access.log --error-logfile /var/log/bitcalc/gunicorn_error.log
     web:
         container_name: bitcalc_web
         build:
